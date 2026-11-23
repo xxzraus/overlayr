@@ -1,0 +1,159 @@
+/* ------------------------------------------------------------------
+   Aurora — spotlight launcher
+------------------------------------------------------------------ */
+
+html,
+body {
+  background: transparent !important;
+  overflow: hidden;
+}
+
+.launcher-body {
+  padding: 10px;
+  height: 100vh;
+}
+
+.launcher {
+  position: relative;
+  height: calc(100vh - 20px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(165deg, color-mix(in srgb, var(--bg2) 94%, transparent), color-mix(in srgb, var(--bg) 98%, transparent));
+  border: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+  box-shadow:
+    0 0 80px color-mix(in srgb, var(--accent) 14%, transparent),
+    0 30px 70px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  -webkit-app-region: drag;
+}
+
+.l-glow {
+  position: absolute;
+  inset: -40% 30% auto -10%;
+  height: 280px;
+  background: radial-gradient(circle at 30% 40%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 65%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.l-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  -webkit-app-region: no-drag;
+}
+.l-search svg {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  flex: 0 0 auto;
+}
+.l-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.l-search input::placeholder {
+  color: var(--muted);
+  font-weight: 450;
+}
+.l-count {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.l-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+}
+
+.l-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.12s var(--ease);
+  border: 1px solid transparent;
+}
+.l-item .ico {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--surface-3);
+  font-size: 13px;
+  font-weight: 650;
+  flex: 0 0 auto;
+}
+.l-item .ico img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.l-item .nm {
+  font-size: 13.5px;
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.l-item .tag {
+  font-size: 10px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
+  padding: 1px 7px;
+  border-radius: 99px;
+}
+.l-item.sel {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+}
+.l-item.sel .nm {
+  color: var(--text);
+}
+.l-empty {
+  padding: 50px 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.l-foot {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+}
+.l-foot b {
+  color: var(--text);
+  font-weight: 600;
+}
+.l-hint {
+  margin-left: auto;
+  color: var(--muted);
+}

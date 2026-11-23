@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' aurora-icon: data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self' blob:; connect-src 'self' aurora-icon:" />
+<title>Overlayr</title>
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/app.css" />
+</head>
+<body>
+<div class="app">
+  <header class="titlebar">
+    <div class="brand"><img class="logo-mark" src="../../assets/icon.png" alt="Overlayr" /> Overlayr <span class="hint">твой ПК — твои краски</span></div>
+    <div class="tb-right">
+      <button class="btn small" id="btn-quick-launch" title="Быстрый запуск">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        Запуск <span class="kbd">Ctrl Alt Space</span>
+      </button>
+      <div class="win-controls">
+        <button class="win-btn" id="win-min" title="Свернуть">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+        </button>
+        <button class="win-btn" id="win-max" title="Развернуть">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="5" width="14" height="14" rx="2"/></svg>
+        </button>
+        <button class="win-btn close" id="win-close" title="Свернуть в трей">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <aside class="sidebar">
+      <nav>
+        <button class="nav-btn active" data-view="themes">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="12.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="14.5" r="2.5"/><path d="M12 21a9 9 0 1 1 9-9c0 2-1.5 3-3.5 3H15a2 2 0 0 0 0 4c0 1.1-.9 2-2 2z"/></svg>
+          Темы
+        </button>
+        <button class="nav-btn" data-view="music">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></svg>
+          Музыка
+          <span class="badge" id="nav-badge-music">off</span>
+        </button>
+        <button class="nav-btn" data-view="dock">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+          Док
+          <span class="badge" id="nav-badge-dock">0</span>
+        </button>
+        <button class="nav-btn" data-view="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.9 19.3a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.7 8.9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.55V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.55 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.55 1z"/></svg>
+          Настройки
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="mini-player" id="mini-player" title="Открыть музыкальный оверлей">
+          <div class="mini-art" id="mini-art">♪</div>
+          <div class="mini-meta">
+            <div class="mini-title" id="mini-title">Тишина</div>
+            <div class="mini-sub" id="mini-sub">ничего не играет</div>
+          </div>
+          <button class="mini-play" id="mini-play" title="Пауза / Плей">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+        <div class="sys-stats">
+          <div class="stat">
+            <div class="stat-label">CPU</div>
+            <div class="stat-value"><span id="stat-cpu">—</span>%</div>
+            <div class="stat-bar"><i id="bar-cpu" style="width:0%"></i></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">RAM</div>
+            <div class="stat-value"><span id="stat-ram">—</span>%</div>
+            <div class="stat-bar"><i id="bar-ram" style="width:0%"></i></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content">
+      <!-- ============ THEMES ============ -->
+      <section class="view active" id="view-themes">
+        <div class="page-head">
+          <div>
+            <h1>Оформление</h1>
+            <p>18 тем для приложения и оверлея. Одним нажатием — на весь Windows.</p>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="btn-apply-system">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+              Применить к Windows
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-row" id="profile-row">
+          <span class="profile-label">Профили:</span>
+        </div>
+
+        <div class="system-panel">
+          <label class="sys-toggle">
+            <span>
+              <span class="t">Тёмный режим</span>
+              <span class="d">как в теме</span>
+            </span>
+            <span class="switch" id="sw-dark" style="margin-left:auto"></span>
+          </label>
+          <label class="sys-toggle">
+            <span>
+              <span class="t">Акцент</span>
+              <span class="d">панель задач и заголовки</span>
+            </span>
+            <span class="switch" id="sw-accent" style="margin-left:auto"></span>
+          </label>
+          <label class="sys-toggle">
+            <span>
+              <span class="t">Обои</span>
+              <span class="d">генерировать из темы</span>
+            </span>
+            <span class="switch" id="sw-wallpaper" style="margin-left:auto"></span>
+          </label>
+        </div>
+
+        <div class="theme-grid" id="theme-grid"></div>
+
+        <div class="card wallpaper-card" id="wallpaper-card">
+          <div class="editor-head">
+            <div>
+              <h3>Обои из темы</h3>
+              <div class="card-sub">Узор рисуется из палитры выбранной темы — можно выбрать готовый или нарисовать свой</div>
+            </div>
+            <div class="editor-actions">
+              <div class="segmented" id="seg-pattern">
+                <button data-pattern="aurora">Пятна</button>
+                <button data-pattern="waves">Волны</button>
+                <button data-pattern="grid">Сетка</button>
+                <button data-pattern="dots">Точки</button>
+                <button data-pattern="rings">Кольца</button>
+                <button data-pattern="custom">Своё</button>
+              </div>
+            </div>
+          </div>
+          <div class="wallpaper-row">
+            <div class="segmented" id="seg-wallsrc">
+              <button data-src="pattern">Узор</button>
+              <button data-src="player">Плеер</button>
+            </div>
+            <button class="btn" id="btn-gen-wallpaper">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="14" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15l-5-5-6 6-3-3-4 4"/></svg>
+              Сгенерировать
+            </button>
+            <button class="btn" id="btn-draw-wallpaper">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+              Нарисовать узор
+            </button>
+            <button class="btn" id="btn-restore-wallpaper" title="Вернуть обои, которые стояли до Overlayr">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>
+              Прежние обои
+            </button>
+            <div class="spacer"></div>
+            <span class="row" id="slideshow-wrap" style="gap:8px;align-items:center">
+              <span class="muted" style="font-size:12px">Слайдшоу</span>
+              <span class="switch" id="sw-slideshow"></span>
+              <select class="mini-select" id="slideshow-minutes">
+                <option value="5">5 мин</option>
+                <option value="15">15 мин</option>
+                <option value="30">30 мин</option>
+                <option value="60">60 мин</option>
+              </select>
+            </span>
+          </div>
+          <div class="wallpaper-row" style="margin-top:10px">
+            <span class="muted" style="font-size:12px">Иконки рабочего стола</span>
+            <span class="switch" id="sw-desktopicons"></span>
+            <span class="muted" style="font-size:11.5px">скрыть значки, оставить только обои</span>
+          </div>
+          <div class="wallpaper-row" id="lyrics-wrap" style="margin-top:8px">
+            <span class="muted" style="font-size:12px">Текст песни</span>
+            <span class="switch" id="sw-lyrics"></span>
+            <span class="muted" style="font-size:11.5px">показывать текст на обоях с плеером</span>
+          </div>
+        </div>
+
+        <div class="card theme-editor" id="theme-editor">
+          <div class="editor-head">
+            <div>
+              <h3>Своя тема</h3>
+              <div class="card-sub">Цвета, контраст, гамма, насыщенность, форма и фон — интерфейс меняется сразу</div>
+            </div>
+            <div class="editor-actions">
+              <div class="segmented" id="seg-wallmode" title="Как подстраивать палитру под обои">
+                <button data-mode="auto">Авто</button>
+                <button data-mode="dark">Тёмная</button>
+                <button data-mode="light">Светлая</button>
+              </div>
+              <button class="btn small" id="btn-theme-from-wallpaper">Из обоев</button>
+              <button class="btn small" id="btn-theme-export">Экспорт</button>
+              <button class="btn small" id="btn-theme-import">Импорт</button>
+              <button class="btn small" id="btn-theme-reset">Сброс</button>
+              <button class="btn small primary" id="btn-theme-save">Сохранить тему</button>
+            </div>
+          </div>
+          <div class="editor-grid">
+            <div class="ed-col">
+              <div class="ed-row"><span>Фон</span><label class="ed-swatch"><input type="color" id="ed-bg" value="#081420" /></label></div>
+              <div class="ed-row"><span>Акцент</span><label class="ed-swatch"><input type="color" id="ed-accent" value="#35e0a1" /></label></div>
+              <div class="ed-row"><span>Второй акцент</span><label class="ed-swatch"><input type="color" id="ed-accent2" value="#4aa8ff" /></label></div>
+              <div class="ed-row"><span>Свечение</span><label class="ed-swatch"><input type="color" id="ed-aura" value="#22d3ee" /></label></div>
+            </div>
+            <div class="ed-sliders">
+              <div class="ed-slider"><label>Контраст <b id="ed-contrast-v">100%</b></label><input type="range" id="ed-contrast" min="60" max="190" value="100" /></div>
+              <div class="ed-slider"><label>Гамма <b id="ed-gamma-v">100%</b></label><input type="range" id="ed-gamma" min="60" max="150" value="100" /></div>
+              <div class="ed-slider"><label>Градиент <b id="ed-gradient-v">100%</b></label><input type="range" id="ed-gradient" min="0" max="100" value="100" /></div>
+              <div class="ed-slider"><label>Насыщенность <b id="ed-saturation-v">100%</b></label><input type="range" id="ed-saturation" min="0" max="200" value="100" /></div>
+              <div class="ed-slider"><label>Яркость фона <b id="ed-brightness-v">100%</b></label><input type="range" id="ed-brightness" min="55" max="150" value="100" /></div>
+              <div class="ed-slider"><label>Свечение фона <b id="ed-glow-v">100%</b></label><input type="range" id="ed-glow" min="0" max="200" value="100" /></div>
+            </div>
+            <div class="ed-preview" id="ed-preview">
+              <div class="edp" id="edp">
+                <div class="edp-dots"><i></i><i></i><i></i></div>
+                <div class="edp-name">Overlayr</div>
+                <div class="edp-lines"><span></span><span></span></div>
+                <div class="edp-cta">Кнопка</div>
+              </div>
+            </div>
+          </div>
+          <div class="editor-extra">
+            <div class="ed-slider ed-inline"><label>Скругление интерфейса <b id="ed-radius-v">16</b></label><input type="range" id="ed-radius" min="0" max="28" value="16" /></div>
+            <div class="ed-seg"><span>Фон</span>
+              <div class="segmented" id="seg-bgstyle">
+                <button data-style="aurora">Пятна</button>
+                <button data-style="gradient">Градиент</button>
+                <button data-style="solid">Сплошной</button>
+              </div>
+            </div>
+            <div class="ed-slider ed-inline"><label>Угол градиента <b id="ed-angle-v">180°</b></label><input type="range" id="ed-angle" min="0" max="360" value="180" /></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MUSIC ============ -->
+      <section class="view" id="view-music">
+        <div class="page-head">
+          <div>
+            <h1>Музыка</h1>
+            <p>Оверлей поверх всех окон: что играет, пауза, перемотка, громкость.</p>
+          </div>
+          <div class="actions">
+            <button class="btn" id="btn-toggle-overlay">Скрыть оверлей</button>
+          </div>
+        </div>
+
+        <div class="music-grid">
+          <div class="player-card">
+            <div class="player-top">
+              <div class="album-art" id="big-art">♪</div>
+              <div style="min-width:0;flex:1">
+                <div class="now-title" id="now-title">Тишина в эфире</div>
+                <div class="now-artist" id="now-artist">Включи что-нибудь — оверлей подхватит</div>
+                <div class="now-source">
+                  <span class="chip" id="now-app">нет сессии</span>
+                  <span class="chip" id="now-status">—</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span id="pos-cur">0:00</span>
+              <div class="progress-track" id="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+              <span id="pos-dur">0:00</span>
+            </div>
+
+            <div class="controls">
+              <button id="btn-shuffle" title="Перемешать">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+              </button>
+              <button id="btn-prev" title="Предыдущий">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 20L9 12l10-8z"/><path d="M5 19V5"/></svg>
+              </button>
+              <button class="play" id="btn-play" title="Пауза / Плей">
+                <svg id="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5v14l11-7z" fill="currentColor" stroke="none"/></svg>
+              </button>
+              <button id="btn-next" title="Следующий">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4l10 8-10 8z"/><path d="M19 5v14"/></svg>
+              </button>
+              <button id="btn-repeat" title="Повтор">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              </button>
+            </div>
+
+            <div class="volume-row">
+              <button class="icon-btn" id="btn-mute" title="Без звука">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/></svg>
+              </button>
+              <input type="range" id="volume-range" min="0" max="100" value="50" />
+              <span class="pct" id="volume-pct">50%</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-title">Оверлей</div>
+
+            <div class="setting-row">
+              <div>
+                <div class="label">Размер</div>
+                <div class="desc">компактный, обычный или широкий</div>
+              </div>
+              <div class="control">
+                <div class="segmented" id="seg-layout">
+                  <button data-layout="compact">Мини</button>
+                  <button data-layout="standard">Стандарт</button>
+                  <button data-layout="wide">Широкий</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="label">Ширина</div>
+                <div class="desc"><span id="width-val">400</span> px</div>
+              </div>
+              <div class="control" style="width:150px">
+                <input type="range" id="range-width" min="280" max="620" step="10" value="400" />
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="label">Прозрачность</div>
+                <div class="desc"><span id="opacity-val">92</span>%</div>
+              </div>
+              <div class="control" style="width:150px">
+                <input type="range" id="range-opacity" min="35" max="100" step="1" value="92" />
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="label">Скругление</div>
+                <div class="desc"><span id="radius-val">24</span> px</div>
+              </div>
+              <div class="control" style="width:150px">
+                <input type="range" id="range-radius" min="0" max="36" step="1" value="24" />
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div><div class="label">Визуализатор</div><div class="desc">живые полоски под трек</div></div>
+              <div class="control"><span class="switch" id="sw-visualizer"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Прогресс</div><div class="desc">полоса и время</div></div>
+              <div class="control"><span class="switch" id="sw-progress"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Громкость</div><div class="desc">слайдер громкости музыки</div></div>
+              <div class="control"><span class="switch" id="sw-volume"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Чей звук</div><div class="desc">менять громкость приложения, а не всей системы</div></div>
+              <div class="control">
+                <div class="segmented" id="seg-volume">
+                  <button data-mode="app">Приложение</button>
+                  <button data-mode="system">Система</button>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Сворачивать в иконку</div><div class="desc">при наведении раскрывается полностью</div></div>
+              <div class="control"><span class="switch" id="sw-peek"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Эквалайзер</div><div class="desc">настоящий спектр играющего звука</div></div>
+              <div class="control"><span class="switch" id="sw-spectrum"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Стиль спектра</div><div class="desc">полосы, волна или круг</div></div>
+              <div class="control">
+                <div class="segmented" id="seg-spectrum">
+                  <button data-style="bars">Полосы</button>
+                  <button data-style="wave">Волна</button>
+                  <button data-style="circle">Круг</button>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Чувствительность</div><div class="desc"><span id="sens-val">100</span>%</div></div>
+              <div class="control" style="width:150px">
+                <input type="range" id="range-sens" min="40" max="220" step="5" value="100" />
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Прятать в полноэкранных играх</div><div class="desc">скрывать виджет, когда приложение на весь экран</div></div>
+              <div class="control"><span class="switch" id="sw-fullscreen"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Часы</div><div class="desc">время и дата</div></div>
+              <div class="control"><span class="switch" id="sw-clock"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Статистика ПК</div><div class="desc">CPU / RAM в оверлее</div></div>
+              <div class="control"><span class="switch" id="sw-stats"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Поверх всех окон</div><div class="desc">даже в полноэкранных играх</div></div>
+              <div class="control"><span class="switch" id="sw-onTop"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Клики насквозь</div><div class="desc">не мешать работе (Ctrl+Alt+M)</div></div>
+              <div class="control"><span class="switch" id="sw-clickThrough"></span></div>
+            </div>
+
+            <div class="overlay-actions">
+              <button class="btn" id="btn-overlay-show">Показать</button>
+              <button class="btn" id="btn-overlay-reset">Сбросить позицию</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="music-lower">
+          <div class="preview-card">
+            <div class="section-title">Превью оверлея</div>
+            <div class="ovp" id="ovp">
+              <div class="ovp-art" id="ovp-art">♪</div>
+              <div class="ovp-body">
+                <div class="ovp-title" id="ovp-title">Тишина в эфире</div>
+                <div class="ovp-sub" id="ovp-sub">включи музыку — я подхвачу</div>
+                <div class="ovp-bar"><div class="ovp-fill" id="ovp-fill"></div></div>
+                <div class="ovp-foot"><span id="ovp-pos">0:00</span><span id="ovp-dur">0:00</span></div>
+              </div>
+              <button class="ovp-play" id="ovp-play" title="Пауза / Плей">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
+            <div class="muted" style="font-size:11.5px;margin-top:10px">Живое превью: обновляется вместе с треком и настройками</div>
+          </div>
+          <div class="card">
+            <div class="section-title">Последние треки</div>
+            <div class="history-list" id="history-list">
+              <div class="muted" style="font-size:12.5px;padding:6px 2px">Пока пусто — включи музыку.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ DOCK ============ -->
+      <section class="view" id="view-dock">
+        <div class="page-head">
+          <div>
+            <h1>Быстрый доступ</h1>
+            <p>Закрепи то, что запускаешь чаще всего. Ctrl+Alt+1…9 — закреплённые, Ctrl+Alt+Space — поиск.</p>
+          </div>
+          <div class="actions">
+            <button class="btn" id="btn-refresh-apps">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/></svg>
+              Обновить список
+            </button>
+            <button class="btn primary" id="btn-add-app">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Закрепить
+            </button>
+          </div>
+        </div>
+
+        <div class="dock-panel">
+          <div class="section-title">Закреплено</div>
+          <div class="pinned-grid" id="pinned-grid"></div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div class="section-title">Часто запускаете</div>
+          <div class="freq-row" id="freq-row"><span class="muted" style="font-size:12.5px">Пока ничего не запускали через Overlayr.</span></div>
+        </div>
+
+        <div class="card">
+          <div class="row" style="margin-bottom:14px">
+            <h3 style="font-size:14.5px">Все приложения <span class="muted" id="apps-count" style="font-weight:500;font-size:12px"></span></h3>
+            <div class="spacer"></div>
+            <div class="search-box" style="width:280px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+              <input type="text" id="app-search" placeholder="Найти приложение…" />
+            </div>
+          </div>
+          <div class="app-catalog" id="catalog"></div>
+        </div>
+      </section>
+
+      <!-- ============ SETTINGS ============ -->
+      <section class="view" id="view-settings">
+        <div class="page-head">
+          <div>
+            <h1>Настройки</h1>
+            <p>Автозапуск, горячие клавиши и служебные данные.</p>
+          </div>
+        </div>
+
+        <div class="settings-grid">
+          <div class="card settings-card">
+            <h3>Общие</h3>
+            <div class="card-sub">Как Overlayr ведёт себя в системе.</div>
+            <div class="setting-row">
+              <div><div class="label">Язык / Language</div><div class="desc">English is the default interface language</div></div>
+              <div class="control">
+                <div class="segmented" id="seg-lang">
+                  <button data-lang="en">English</button>
+                  <button data-lang="ru">Русский</button>
+                </div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Запускать с Windows</div><div class="desc">тихо, сразу в трей</div></div>
+              <div class="control"><span class="switch" id="sw-autostart"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Оверлей при старте</div><div class="desc">показывать музыкальный виджет</div></div>
+              <div class="control"><span class="switch" id="sw-overlayStart"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Папка данных</div><div class="desc" id="data-dir">—</div></div>
+              <div class="control"><button class="btn small" id="btn-open-data">Открыть</button></div>
+            </div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Горячие клавиши</h3>
+            <div class="card-sub">Формат Electron: Control+Alt+Space</div>
+            <div class="setting-row">
+              <div><div class="label">Быстрый запуск</div><div class="desc">палитра приложений</div></div>
+              <div class="control"><input class="hotkey-input" data-hk="launcher" readonly /></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Оверлей</div><div class="desc">показать / скрыть</div></div>
+              <div class="control"><input class="hotkey-input" data-hk="overlay" readonly /></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Следующая тема</div><div class="desc">переключить оформление</div></div>
+              <div class="control"><input class="hotkey-input" data-hk="nextTheme" readonly /></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Без звука</div><div class="desc">системный mute</div></div>
+              <div class="control"><input class="hotkey-input" data-hk="mute" readonly /></div>
+            </div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Оформление Windows</h3>
+            <div class="card-sub">Что менять при применении темы.</div>
+            <div class="setting-row">
+              <div><div class="label">Тёмный режим</div><div class="desc">приложения и система</div></div>
+              <div class="control"><span class="switch" id="sw-sysDark"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Акцентный цвет</div><div class="desc">панель задач, заголовки, меню</div></div>
+              <div class="control"><span class="switch" id="sw-sysAccent"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Обои рабочего стола</div><div class="desc">генерируются из темы</div></div>
+              <div class="control"><span class="switch" id="sw-sysWall"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Статус Windows</div><div class="desc" id="sys-status">—</div></div>
+              <div class="control"><button class="btn small" id="btn-sys-status">Проверить</button></div>
+            </div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Экран</h3>
+            <div class="card-sub">Яркость и контраст монитора (DDC/CI) и тёплый вечерний режим.</div>
+            <div class="setting-row">
+              <div><div class="label">Яркость</div><div class="desc"><span id="brightness-val">проверяю…</span></div></div>
+              <div class="control" style="width:150px"><input type="range" id="range-brightness" min="0" max="100" value="50" /></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Контраст</div><div class="desc"><span id="contrast-val">—</span></div></div>
+              <div class="control" style="width:150px"><input type="range" id="range-contrast" min="0" max="100" value="50" /></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Тёплый вечерний режим</div><div class="desc">янтарный фильтр поверх экрана</div></div>
+              <div class="control"><span class="switch" id="sw-warm"></span></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Сила фильтра</div><div class="desc"><span id="warm-val">45</span>%</div></div>
+              <div class="control" style="width:150px"><input type="range" id="range-warm" min="10" max="70" value="45" /></div>
+            </div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>Хоткеи приложений</h3>
+            <div class="card-sub">Клик по полю и нажми сочетание — оно запустит закреплённое приложение.</div>
+            <div id="apphotkeys-list"></div>
+          </div>
+
+          <div class="card settings-card">
+            <h3>О проекте</h3>
+            <div class="card-sub">Overlayr — твоя система, твои краски.</div>
+            <div class="about" style="margin:14px 0">
+              <img class="big-logo" src="../../assets/icon.png" alt="Overlayr" style="object-fit:cover" />
+              <div>
+                <div style="font-weight:640;font-size:15px">Overlayr <span class="muted" style="font-weight:500;font-size:12px" id="app-version"></span></div>
+                <div class="muted" style="font-size:12px">темы, музыка, быстрый доступ</div>
+              </div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Сбросить настройки</div><div class="desc">темы, док и оверлей — к исходным</div></div>
+              <div class="control"><button class="btn small" id="btn-reset-settings">Сбросить</button></div>
+            </div>
+            <div class="setting-row">
+              <div><div class="label">Выход</div><div class="desc">полностью закрыть Overlayr</div></div>
+              <div class="control"><button class="btn small" id="btn-quit">Выйти</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <h2 id="modal-title">Выберите приложение</h2>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="modal-close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input type="text" id="modal-search" placeholder="Название приложения…" />
+    </div>
+    <div class="modal-list" id="modal-list"></div>
+  </div>
+</div>
+
+<div class="welcome-card" id="welcome-card">
+  <img class="welcome-art" src="../../assets/welcome.png" alt="Overlayr" />
+  <div class="welcome-copy">
+    <div class="welcome-title">Привет, это Overlayr</div>
+    <div class="welcome-sub">Темы, музыкальный оверлей и быстрый доступ — всё в одном месте. Начни с «Тем» или закрепи приложения в доке.</div>
+    <div class="welcome-actions">
+      <button class="btn small primary" id="welcome-themes">К темам</button>
+      <button class="btn small" id="welcome-close">Понятно</button>
+    </div>
+  </div>
+  <button class="welcome-x" id="welcome-x" title="Закрыть">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<div class="modal-backdrop" id="draw-backdrop">
+  <div class="modal draw-modal">
+    <div class="modal-head">
+      <h2>Свой узор для обоев</h2>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="draw-close" title="Закрыть">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="muted" style="font-size:12px">Рисуй по холсту — штрихи станут частью обоев выбранной темы.</div>
+    <canvas id="draw-canvas" width="1200" height="675"></canvas>
+    <div class="draw-tools">
+      <span class="muted" style="font-size:12px">Кисть</span>
+      <input type="range" id="draw-size" min="2" max="40" value="10" />
+      <button class="btn small" id="draw-clear">Очистить</button>
+      <div class="spacer"></div>
+      <button class="btn small" id="draw-cancel">Отмена</button>
+      <button class="btn small primary" id="draw-apply">Применить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

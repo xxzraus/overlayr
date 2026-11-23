@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' aurora-icon: data:; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+<title>Overlayr launcher</title>
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/launcher.css" />
+</head>
+<body class="launcher-body">
+  <div class="launcher" id="launcher">
+    <div class="l-glow"></div>
+    <div class="l-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="l-input" type="text" placeholder="Что запустить?" autocomplete="off" spellcheck="false" />
+      <span class="l-count" id="l-count"></span>
+    </div>
+    <div class="l-list" id="l-list"></div>
+    <div class="l-foot">
+      <span><b>↑↓</b> выбор</span>
+      <span><b>Enter</b> запустить</span>
+      <span><b>Esc</b> закрыть</span>
+      <span class="l-hint" id="l-hint"></span>
+    </div>
+  </div>
+<script src="i18n.js"></script>
+<script src="launcher.js"></script>
+</body>
+</html>

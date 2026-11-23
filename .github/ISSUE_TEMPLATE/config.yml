@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Ideas and discussions
+    url: https://github.com/xxzraus/overlayr/discussions
+    about: Share ideas, screenshots of your setup, or ask a question.
+  - name: ❤️ Support the project
+    url: https://www.donationalerts.com/r/xxzraus_creator
+    about: If Overlayr makes your desktop nicer, you can buy the developer a coffee.

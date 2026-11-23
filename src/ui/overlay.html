@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' aurora-icon: data:; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+<title>Overlayr overlay</title>
+<link rel="stylesheet" href="styles/base.css" />
+<link rel="stylesheet" href="styles/overlay.css" />
+</head>
+<body class="ov-body">
+  <div class="ov" id="ov" data-layout="standard">
+    <div class="ov-glow"></div>
+    <div class="ov-glow second"></div>
+
+    <div class="ov-top">
+      <div class="ov-art" id="ov-art">
+        <span class="ov-note">♪</span>
+        <i class="ov-art-progress" id="ov-art-progress"></i>
+      </div>
+
+      <div class="ov-text">
+        <div class="ov-title" id="ov-title">Тишина в эфире</div>
+        <div class="ov-sub">
+          <span class="ov-artist" id="ov-artist">включи музыку — я подхвачу</span>
+          <span class="ov-app" id="ov-app"></span>
+        </div>
+      </div>
+
+      <div class="ov-controls">
+        <button class="ov-btn ghost" id="ov-prev" title="Предыдущий">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 20L9 12l10-8z"/><path d="M5 19V5"/></svg>
+        </button>
+        <button class="ov-btn play" id="ov-play" title="Пауза / Плей">
+          <svg id="ov-play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="ov-btn ghost" id="ov-next" title="Следующий">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4l10 8-10 8z"/><path d="M19 5v14"/></svg>
+        </button>
+      </div>
+
+      <button class="ov-close" id="ov-close" title="Скрыть оверлей (Ctrl+Alt+M)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="ov-progress" id="ov-progress-row">
+      <span class="ov-time" id="ov-pos">0:00</span>
+      <div class="ov-track" id="ov-track"><div class="ov-fill" id="ov-fill"></div></div>
+      <span class="ov-time" id="ov-dur">0:00</span>
+    </div>
+
+    <div class="ov-foot">
+      <div class="ov-visualizer" id="ov-visualizer"></div>
+      <div class="ov-widgets">
+        <div class="ov-trackbuttons">
+          <button class="ov-mini" id="ov-shuffle" title="Перемешать">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+          </button>
+          <button class="ov-mini" id="ov-repeat" title="Повтор">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </button>
+        </div>
+        <div class="ov-volume" id="ov-volume">
+          <button class="ov-mini" id="ov-mute" title="Без звука">
+            <svg id="ov-mute-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/></svg>
+          </button>
+          <input type="range" id="ov-vol" min="0" max="100" value="50" />
+        </div>
+        <div class="ov-stats" id="ov-stats"><span id="ov-cpu">—</span> · <span id="ov-ram">—</span></div>
+        <div class="ov-clock" id="ov-clock">--:--</div>
+      </div>
+    </div>
+  </div>
+<script src="i18n.js"></script>
+<script src="overlay.js"></script>
+</body>
+</html>

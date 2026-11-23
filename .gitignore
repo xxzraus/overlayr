@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.buildtools/
+.video/
+.shots/
+
+# Local settings and logs
+*.log
+.dbg.*
+npm-debug.log*
+yarn-error.log*
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+*.swp

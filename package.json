@@ -1,0 +1,30 @@
+{
+  "name": "overlayr",
+  "productName": "Overlayr",
+  "version": "1.3.1",
+  "description": "Themes, a now-playing overlay and quick app access for Windows.",
+  "license": "MIT",
+  "private": true,
+  "main": "src/main/main.js",
+  "keywords": [
+    "windows",
+    "themes",
+    "overlay",
+    "music",
+    "now-playing",
+    "electron"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "electron .",
+    "build:tools": "powershell -NoProfile -ExecutionPolicy Bypass -File build/build-tools.ps1",
+    "build:portable": "powershell -NoProfile -ExecutionPolicy Bypass -File build/build-portable.ps1",
+    "build:installer": "powershell -NoProfile -ExecutionPolicy Bypass -File build/build-installer.ps1",
+    "build": "npm run build:portable && npm run build:installer"
+  },
+  "devDependencies": {
+    "electron": "38.8.6"
+  }
+}
