@@ -30,13 +30,15 @@ jobs:
           New-Item -ItemType Directory -Force -Path .buildtools | Out-Null
           Invoke-WebRequest -Uri https://github.com/electron/rcedit/releases/latest/download/rcedit-x64.exe -OutFile .buildtools/rcedit.exe
 
+      - name: Fetch NSIS
+        run: |
+          New-Item -ItemType Directory -Force -Path .buildtools\nsis | Out-Null
+          Invoke-WebRequest -Uri https://github.com/electron-userland/electron-builder-binaries/releases/download/nsis-3.0.4.1/nsis-3.0.4.1.7z -OutFile nsis.7z
+          tar -xf nsis.7z -C .buildtools\nsis
+          "MAKENSIS=$((Resolve-Path '.buildtools\nsis\makensis.exe').Path)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
       - name: Build portable package
         run: npm run build:portable
-
-      - name: Install NSIS
-        run: |
-          choco install nsis --no-progress -y
-          "MAKENSIS=C:\Program Files (x86)\NSIS\makensis.exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Build installer
         run: npm run build:installer
