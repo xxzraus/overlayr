@@ -25,11 +25,18 @@ jobs:
       - name: Build native helpers
         run: npm run build:tools
 
+      - name: Fetch rcedit
+        run: |
+          New-Item -ItemType Directory -Force -Path .buildtools | Out-Null
+          Invoke-WebRequest -Uri https://github.com/electron/rcedit/releases/latest/download/rcedit-x64.exe -OutFile .buildtools/rcedit.exe
+
       - name: Build portable package
         run: npm run build:portable
 
       - name: Install NSIS
-        run: choco install nsis --no-progress -y
+        run: |
+          choco install nsis --no-progress -y
+          "MAKENSIS=C:\Program Files (x86)\NSIS\makensis.exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Build installer
         run: npm run build:installer
@@ -49,3 +56,5 @@ jobs:
           files: |
             dist/Overlayr-Setup-*.exe
             dist/Overlayr-portable-*.zip
+          overwrite_files: true
+          fail_on_unmatched_files: false
