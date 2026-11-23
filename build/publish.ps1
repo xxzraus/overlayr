@@ -1,4 +1,4 @@
-param(
+﻿param(
   [Parameter(Mandatory = $true)][string]$Token,
   [string]$Owner = 'xxzraus',
   [string]$Repo = 'overlayr'
@@ -67,7 +67,23 @@ if (-not $existing) {
   $release = Invoke-GitHub 'POST' "/repos/$Owner/$Repo/releases" @{
     tag_name = $tag
     name     = "Overlayr $version"
-    body     = "Themes, a now-playing overlay and a live wallpaper for Windows. See CHANGELOG.md for details."
+    body     = @"
+## Overlayr $version
+
+Themes, a now-playing overlay and a live wallpaper for Windows.
+
+### Highlights
+- **Live wallpaper**: cover, title, artist and the full lyrics, with a progress bar that follows the track.
+- **18 themes** plus a full editor, wallpaper-derived palettes, export/import, profiles.
+- **Music overlay** with per-app volume, real spectrum, peek mode and fullscreen hiding.
+- **Wallpaper studio**: five patterns, custom drawing, slideshow, restore previous wallpaper, hide desktop icons.
+- **Brightness/contrast** (DDC/CI), warm evening mode, English and Russian UI.
+
+### Install
+Run `Overlayr-Setup-$version.exe` (per-user, no admin rights) or unpack `Overlayr-portable-$version.zip`.
+
+See CHANGELOG.md for the complete list of changes.
+"@
     draft    = $false
     prerelease = $false
   }
